@@ -32,14 +32,37 @@ PROY_CLASIFICADOR_INTENCIONES/
 │   │   ├── main.py
 │   │   ├── ml_utils.py
 │   │   ├── train_models.py
+│   │   ├── entrypoint.sh
+│   │   ├── Dockerfile
 │   │   └── models/              # generado localmente (.pkl)
 │   ├── frontend/
-│   │   └── app.py
+│   │   ├── app.py
+│   │   └── Dockerfile
+│   ├── docker-compose.yml
+│   ├── .dockerignore
 │   ├── requirements.txt
 │   └── .env.example
 ├── setup_env.sh
 └── .gitignore
 ```
+
+## Arquitectura con Docker Compose
+
+El stack `smart-inbox-ai/` se ejecuta con 2 servicios y 1 volumen persistente:
+
+- `backend` (FastAPI + Uvicorn): expone API y healthcheck en el puerto interno `8000`.
+- `frontend` (Streamlit): UI web en el puerto interno `8501`.
+- `backend_models` (volumen): persiste `backend/models` para evitar reentrenar modelos en cada reinicio.
+
+Flujo:
+1. El usuario abre `frontend`.
+2. `frontend` llama a `http://backend:8000/predict` dentro de la red de Compose.
+3. `backend` responde la intención y las probabilidades por modelo.
+
+Detalles operativos:
+- `frontend` espera a que `backend` esté saludable (`depends_on` con `condition: service_healthy`).
+- El backend entrena modelos automáticamente si no existen (`backend/entrypoint.sh`).
+- Los puertos externos son configurables con `BACKEND_PORT` y `FRONTEND_PORT`.
 
 ## Requisitos
 
@@ -98,6 +121,44 @@ streamlit run app.py
 Abrir en navegador:
 - [http://localhost:8501](http://localhost:8501)
 
+## 5) Ejecutar con Docker Compose (recomendado para demo/productivizar)
+
+Desde `smart-inbox-ai/`:
+
+```bash
+docker compose up --build -d
+```
+
+Si tienes puertos ocupados, puedes sobrescribirlos:
+
+```bash
+BACKEND_PORT=8002 FRONTEND_PORT=8502 docker compose up --build -d
+```
+
+Servicios:
+- Frontend: [http://localhost:${FRONTEND_PORT:-8501}](http://localhost:8501)
+- Backend docs: [http://localhost:${BACKEND_PORT:-8000}/docs](http://localhost:8000/docs)
+- Backend health: [http://localhost:${BACKEND_PORT:-8000}/health](http://localhost:8000/health)
+  
+> Si cambias `BACKEND_PORT` o `FRONTEND_PORT`, ajusta estas URLs al puerto elegido.
+
+Notas de operación:
+- El backend genera modelos automáticamente al iniciar si no existen (`backend/entrypoint.sh`).
+- Los modelos se persisten en un volumen Docker (`backend_models`) para no reentrenar en cada restart.
+- El frontend usa `BACKEND_PREDICT_URL=http://backend:8000/predict` dentro de la red interna de Compose.
+
+Apagar stack:
+
+```bash
+docker compose down
+```
+
+Apagar stack y eliminar volumen de modelos:
+
+```bash
+docker compose down -v
+```
+
 ## Configuración por variables de entorno
 
 El frontend permite configurar el endpoint del backend:
@@ -111,10 +172,34 @@ Referencia: `smart-inbox-ai/.env.example`.
 ## Probar API rápidamente
 
 ```bash
-curl -X POST "http://localhost:8000/predict" \
+curl -X POST "http://localhost:${BACKEND_PORT:-8000}/predict" \
   -H "Content-Type: application/json" \
   -d '{"text":"Hola, necesito saber el precio del soporte urgente"}'
 ```
+
+## Checklist de revisión rápida
+
+1. Validar contenedores y salud:
+   ```bash
+   docker compose ps
+   ```
+2. Revisar logs de arranque (backend/frontend):
+   ```bash
+   docker compose logs -f backend frontend
+   ```
+3. Probar healthcheck backend:
+   ```bash
+   curl http://localhost:${BACKEND_PORT:-8000}/health
+   ```
+4. Probar predicción por API:
+   ```bash
+   curl -X POST "http://localhost:${BACKEND_PORT:-8000}/predict" \
+     -H "Content-Type: application/json" \
+     -d '{"text":"Necesito ayuda urgente con mi cuenta"}'
+   ```
+5. Verificar UI en navegador:
+   - Abrir [http://localhost:${FRONTEND_PORT:-8501}](http://localhost:8501)
+   - Enviar un mensaje y confirmar respuesta del asistente + gráfica de confianza.
 
 
 ## Notas
