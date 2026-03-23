@@ -1,6 +1,6 @@
 # Smart Inbox AI - Clasificador de Intenciones
 
-Proyecto de portafolio para clasificar mensajes en 4 intenciones:
+Proyecto de portafolio, usando Naive Bayes (NB) y Maquina de Soporte Vectorial (SVM) para clasificar mensajes en 4 intenciones:
 
 - `URGENTE`
 - `SOPORTE`
