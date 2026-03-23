@@ -83,6 +83,21 @@ with st.sidebar:
     else:
         st.info("Aún no hay predicciones para graficar.")
 
+    st.divider()
+
+    # SECCIÓN DE AUTORÍA
+    st.markdown("### 🧑🏻‍💻 Autor")
+    st.markdown("**Carlos César Sánchez Coronel**")
+
+# Enlaces a Redes Sociales
+    st.markdown("""
+    [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/cesar-sanchez-c//)
+    [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/cesarsanco-ai)
+    """)
+    
+    st.caption("Proyecto clasificador de intenciones, basado en Naive Bayes y SVM")
+    st.caption("Stack: FastAPI, Scikit-learn, Docker y Streamlit")
+
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
