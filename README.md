@@ -116,30 +116,6 @@ curl -X POST "http://localhost:8000/predict" \
   -d '{"text":"Hola, necesito saber el precio del soporte urgente"}'
 ```
 
-## Flujo para subir a GitHub
-
-1. Inicializa repo (si aún no existe en esta carpeta):
-   ```bash
-   git init
-   ```
-2. Revisa estado:
-   ```bash
-   git status
-   ```
-3. Agrega archivos:
-   ```bash
-   git add .
-   ```
-4. Crea commit:
-   ```bash
-   git commit -m "feat: add Smart Inbox AI full-stack app and docs"
-   ```
-5. Crea repo en GitHub y conecta remoto:
-   ```bash
-   git remote add origin <TU_URL_GITHUB>
-   git branch -M main
-   git push -u origin main
-   ```
 
 ## Notas
 
