@@ -11,6 +11,16 @@ Incluye:
 - un notebook de experimentación (`research/`)
 - una app local full-stack (`smart-inbox-ai/`) con backend FastAPI y frontend Streamlit.
 
+## Demo
+
+<p align="center">
+  <img src="assets/demo.png" alt="Demo de Smart Inbox AI clasificando intenciones en tiempo real" width="900" />
+</p>
+
+<p align="center">
+  Interfaz principal del clasificador mostrando predicciones de intención y nivel de confianza por modelo.
+</p>
+
 ## Estructura del proyecto
 
 ```text
