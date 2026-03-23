@@ -13,6 +13,7 @@ COPY backend /app/backend
 RUN chmod +x /app/backend/entrypoint.sh
 
 WORKDIR /app/backend
+RUN python /app/backend/train_models.py
 
 EXPOSE 8000
 
