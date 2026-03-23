@@ -13,13 +13,32 @@ Incluye:
 
 ## Demo
 
+## 🚀 Demo en Vivo
+
+Puedes probar la aplicación interactiva directamente en el link aquí:
+
 <p align="center">
-  <img src="assets/demo.png" alt="Demo de Smart Inbox AI clasificando intenciones en tiempo real" width="900" />
+  <a href="https://intent-classifier-frontend.onrender.com/" target="_blank">
+    <img src="https://static.streamlit.io/badges/streamlit_badge_black_white.svg" alt="Abrir en Streamlit">
+  </a>
+</p>
+
+> **Nota técnica:** Debido al uso de la capa gratuita en Render, la aplicación puede tardar aproximadamente **50 segundos en "despertar"** si no ha recibido visitas recientes. ¡Agradezco tu paciencia!
+
+---
+
+## 📸 Vista de la Interfaz
+
+<p align="center">
+  <img src="assets/demo.png" alt="Dashboard de Smart Inbox AI" width="900" style="border-radius: 10px; border: 1px solid #ddd;" />
 </p>
 
 <p align="center">
-  Interfaz principal del clasificador mostrando predicciones de intención y nivel de confianza por modelo.
+  <i>Interfaz principal del clasificador mostrando el análisis de intención, haciendo comparativo entre los modelos Naive Bayes y SVM.</i>
 </p>
+
+
+
 
 ## Estructura del proyecto
 
